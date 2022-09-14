@@ -35,19 +35,28 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ENDDATE", TypeName = "date")]
         public DateTime Enddate { get; set; }
 
-        public static AsAddrObjParams GetAttributeValue(XmlElement item)
+        public static AsAddrObjParams GetAttributeValue(XmlReader item)
         {
             AsAddrObjParams asAddrObjParams = new AsAddrObjParams();
 
-            asAddrObjParams.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asAddrObjParams.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asAddrObjParams.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asAddrObjParams.Changeidend = long.Parse(item.Attributes.GetNamedItem("CHANGEIDEND").Value);
-            asAddrObjParams.Typeid = int.Parse(item.Attributes.GetNamedItem("TYPEID").Value);
-            asAddrObjParams.Value = item.Attributes.GetNamedItem("VALUE").Value;
-            asAddrObjParams.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asAddrObjParams.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asAddrObjParams.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("ID");
+            asAddrObjParams.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asAddrObjParams.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("CHANGEID");
+            asAddrObjParams.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("CHANGEIDEND");
+            asAddrObjParams.Changeidend = long.Parse(item.Value);
+            item.MoveToAttribute("TYPEID");
+            asAddrObjParams.Typeid = int.Parse(item.Value);
+            item.MoveToAttribute("VALUE");
+            asAddrObjParams.Value = item.Value;
+            item.MoveToAttribute("UPDATEDATE");
+            asAddrObjParams.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asAddrObjParams.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asAddrObjParams.Enddate = DateTime.Parse(item.Value);
 
             return asAddrObjParams;
         }

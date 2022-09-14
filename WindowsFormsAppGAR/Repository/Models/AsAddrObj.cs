@@ -56,40 +56,54 @@ namespace WindowsFormsAppGAR.Repository.Models
         public bool Isactive { get; set; }
 
         //Количество строк: 16014
-        public static AsAddrObj GetAttributeValue(XmlElement item)
+        public static AsAddrObj GetAttributeValue(XmlReader item)
         {
             AsAddrObj asAddrObj = new AsAddrObj();
 
-            asAddrObj.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asAddrObj.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asAddrObj.Objectguid = item.Attributes.GetNamedItem("OBJECTGUID").Value;
-            asAddrObj.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asAddrObj.Name = item.Attributes.GetNamedItem("NAME").Value;
-            asAddrObj.Typename = item.Attributes.GetNamedItem("TYPENAME").Value;
-            asAddrObj.Level = item.Attributes.GetNamedItem("LEVEL").Value;
-            asAddrObj.Opertypeid = item.Attributes.GetNamedItem("OPERTYPEID").Value;
+            item.MoveToAttribute("ID");
+            asAddrObj.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asAddrObj.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTGUID");
+            asAddrObj.Objectguid = item.Value;
+            item.MoveToAttribute("CHANGEID");
+            asAddrObj.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("NAME");
+            asAddrObj.Name = item.Value;
+            item.MoveToAttribute("TYPENAME");
+            asAddrObj.Typename = item.Value;
+            item.MoveToAttribute("LEVEL");
+            asAddrObj.Level = item.Value;
+            item.MoveToAttribute("OPERTYPEID");
+            asAddrObj.Opertypeid = item.Value;
 
-            if (item.HasAttribute("PREVID"))
-                asAddrObj.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("PREVID"))
+                asAddrObj.Previd = long.Parse(item.Value);
             else
                 asAddrObj.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asAddrObj.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asAddrObj.Nextid = long.Parse(item.Value);
             else
                 asAddrObj.Nextid = null;
 
-            asAddrObj.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asAddrObj.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asAddrObj.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asAddrObj.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asAddrObj.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asAddrObj.Enddate = DateTime.Parse(item.Value);
+
+            item.MoveToAttribute("ISACTUAL");
             
-            string IsactualValue = item.Attributes.GetNamedItem("ISACTUAL").Value;            
+            string IsactualValue = item.Value;            
             if (IsactualValue == "1")
                 asAddrObj.Isactual = true;
             else
                 asAddrObj.Isactual = false;
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asAddrObj.Isactive = true;
             else

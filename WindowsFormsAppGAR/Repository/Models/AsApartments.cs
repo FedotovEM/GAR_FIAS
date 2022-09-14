@@ -47,39 +47,51 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ISACTIVE")]
         public bool Isactive { get; set; }
 
-        public static AsApartments GetAttributeValue(XmlElement item)
+        public static AsApartments GetAttributeValue(XmlReader item)
         {
             AsApartments asApartments = new AsApartments();
 
-            asApartments.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asApartments.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asApartments.Objectguid = item.Attributes.GetNamedItem("OBJECTGUID").Value;
-            asApartments.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asApartments.Number = item.Attributes.GetNamedItem("NUMBER").Value;
-            asApartments.Aparttype = short.Parse(item.Attributes.GetNamedItem("APARTTYPE").Value);
-            asApartments.Opertypeid = short.Parse(item.Attributes.GetNamedItem("OPERTYPEID").Value); 
+            item.MoveToAttribute("ID");
+            asApartments.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asApartments.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTGUID");
+            asApartments.Objectguid = item.Value;
+            item.MoveToAttribute("CHANGEID");
+            asApartments.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("NUMBER");
+            asApartments.Number = item.Value;
+            item.MoveToAttribute("APARTTYPE");
+            asApartments.Aparttype = short.Parse(item.Value);
+            item.MoveToAttribute("OPERTYPEID");
+            asApartments.Opertypeid = short.Parse(item.Value); 
            
-            if (item.HasAttribute("PREVID"))
-                asApartments.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("PREVID"))
+                asApartments.Previd = long.Parse(item.Value);
             else
                 asApartments.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asApartments.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asApartments.Nextid = long.Parse(item.Value);
             else
                 asApartments.Nextid = null;
 
-            asApartments.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asApartments.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asApartments.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asApartments.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asApartments.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asApartments.Enddate = DateTime.Parse(item.Value);
 
-            string IsactualValue = item.Attributes.GetNamedItem("ISACTUAL").Value;
+            item.MoveToAttribute("ISACTUAL");
+            string IsactualValue = item.Value;
             if (IsactualValue == "1")
                 asApartments.Isactual = true;
             else
                 asApartments.Isactual = false;
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asApartments.Isactive = true;
             else

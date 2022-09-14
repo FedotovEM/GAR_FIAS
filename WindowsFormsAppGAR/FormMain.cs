@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Serialization;
 using WindowsFormsAppGAR.Repository;
 using WindowsFormsAppGAR.Repository.Models;
 
@@ -21,16 +14,7 @@ namespace WindowsFormsAppGAR
         {
             InitializeComponent();
         }
-
-        public static List<T> Deserializer<T>(string filepath)
-        {
-            List<T> ResultList = new List<T>();
-            XmlSerializer xmlser = new XmlSerializer(typeof(List<T>));
-            using (FileStream fs = new FileStream(filepath, FileMode.Open))
-                ResultList = (List<T>)xmlser.Deserialize(fs);
-            return ResultList;
-        }
-       
+               
         string[] TableArray = {
             "AsAddrObj", "AsAddrObjDivision", "AsAddrObjParams",
             "AsAdmHierarchy", "AsApartments", "AsApartmentsParams",
@@ -47,28 +31,6 @@ namespace WindowsFormsAppGAR
         }
 
         ContextAlpha_FIAS ContextDB;
-
-        private void saveData<Type>(string filepath)
-        {
-            XmlDocument XmlDoc = new XmlDocument();
-            XmlDoc.Load(filepath);
-            XmlElement XmlEl = XmlDoc.DocumentElement;
-
-            var TableContext = ContextDB.AsAddrObj;
-            AsAddrObj asAddrObj;
-
-            if (XmlEl != null)
-            {
-                foreach (XmlElement item in XmlEl)
-                {
-                    asAddrObj = AsAddrObj.GetAttributeValue(item);
-                    TableContext.Add(asAddrObj);
-                    ContextDB.SaveChanges();
-                }
-            }
-        }
-
-
         private void buttonInsert_Click(object sender, EventArgs e)
         {
             string filepath = textBoxFilePath.Text;
@@ -77,350 +39,352 @@ namespace WindowsFormsAppGAR
                 textBoxStatus.AppendText("Файл существует.");
                 string Table = comboBoxTable.SelectedItem.ToString();
 
-                if (Table == "AsAddrObj" && Table.Contains("AS_ADDR_OBJ")) //E:\62\AS_ADDR_OBJ_20220718_8f715f80-fcdf-4ae6-8875-f3dde06d7fdf.XML
+                if (Table == "AsAddrObj" && filepath.Contains("AS_ADDR_OBJ"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsAddrObj;
+                    var reader = XmlReader.Create(filepath);
                     AsAddrObj asAddrObj;
-
-                    if (XmlEl != null)
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("OBJECT"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asAddrObj = AsAddrObj.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asAddrObj))
                         {
-                            asAddrObj = AsAddrObj.GetAttributeValue(item);
                             TableContext.Add(asAddrObj);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
                     }
                 }
-                else if (Table == "AsAddrObjDivision" && Table.Contains("AS_ADDR_OBJ_DIVISION")) //E:\62\AS_ADDR_OBJ_DIVISION_20220718_6d01dfdc-5a76-4849-bcd8-d421f40812b0.XML
+                else if (Table == "AsAddrObjDivision" && filepath.Contains("AS_ADDR_OBJ_DIVISION"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsAddrObjDivision;
+                    var reader = XmlReader.Create(filepath);
                     AsAddrObjDivision asAddrObjDivision;
-
-                    if (XmlEl != null)
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("ITEM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asAddrObjDivision = AsAddrObjDivision.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asAddrObjDivision))
                         {
-                            asAddrObjDivision = AsAddrObjDivision.GetAttributeValue(item);
                             TableContext.Add(asAddrObjDivision);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
                     }
                 }
-                else if (Table == "AsAddrObjParams" && Table.Contains("AS_ADDR_OBJ_PARAMS")) // E:\62\AS_ADDR_OBJ_PARAMS_20220718_682dace2-e359-44bc-a9c6-cca8e5903fa2.XML
+                else if (Table == "AsAddrObjParams" && filepath.Contains("AS_ADDR_OBJ_PARAMS"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsAddrObjParams;
+                    var reader = XmlReader.Create(filepath);
                     AsAddrObjParams asAddrObjParams;
-
-                    if (XmlEl != null)
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("PARAM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asAddrObjParams = AsAddrObjParams.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asAddrObjParams))
                         {
-                            asAddrObjParams = AsAddrObjParams.GetAttributeValue(item);
                             TableContext.Add(asAddrObjParams);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
                     }
                 }
-                else if (Table == "AsAdmHierarchy" && Table.Contains("AS_ADM_HIERARCHY")) // E:\62\AS_ADM_HIERARCHY_20220718_04164ad9-cf24-4e3c-9a60-ac5440fe256f.XML
+                else if (Table == "AsAdmHierarchy" && filepath.Contains("AS_ADM_HIERARCHY"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsAdmHierarchy;
+                    var reader = XmlReader.Create(filepath);
                     AsAdmHierarchy asAdmHierarchy;
-
-                    if (XmlEl != null)
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("ITEM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asAdmHierarchy = AsAdmHierarchy.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asAdmHierarchy))
                         {
-                            asAdmHierarchy = AsAdmHierarchy.GetAttributeValue(item);
                             TableContext.Add(asAdmHierarchy);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
                     }
                 }
-                else if (Table == "AsApartments" && Table.Contains("AS_APARTMENTS")) // E:\62\AS_APARTMENTS_20220718_16ab5577-2908-49bf-84a4-3d7ae996a4e2.XML
+                else if (Table == "AsApartments" && filepath.Contains("AS_APARTMENTS")) 
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsApartments;
+                    var reader = XmlReader.Create(filepath);
                     AsApartments asApartments;
-
-                    if (XmlEl != null)
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("APARTMENT"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asApartments = AsApartments.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asApartments))
                         {
-                            asApartments = AsApartments.GetAttributeValue(item);
                             TableContext.Add(asApartments);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
                     }
                 }
-                else if (Table == "AsApartmentsParams" && Table.Contains("AS_APARTMENTS_PARAMS")) // E:\62\AS_APARTMENTS_PARAMS_20220718_e838441e-b05d-4353-b2f0-9fbb3116ef30.XML
+                else if (Table == "AsApartmentsParams" && filepath.Contains("AS_APARTMENTS_PARAMS")) 
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsApartmentsParams;
+                    var reader = XmlReader.Create(filepath);
                     AsApartmentsParams asApartmentsParams;
-
-                    if (XmlEl != null)
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("PARAM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asApartmentsParams = AsApartmentsParams.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asApartmentsParams))
                         {
-                            asApartmentsParams = AsApartmentsParams.GetAttributeValue(item);
                             TableContext.Add(asApartmentsParams);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
+
                     }
                 }
-                else if (Table == "AsCarplaces" && Table.Contains("AS_CARPLACES")) // E:\62\AS_CARPLACES_20220718_fc2745d4-831a-4b0b-8e12-002737dc8b7f.XML
+                else if (Table == "AsCarplaces" && filepath.Contains("AS_CARPLACES")) 
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsCarplaces;
+                    var reader = XmlReader.Create(filepath);
                     AsCarplaces asCarplaces;
-
-                    if (XmlEl != null)
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("CARPLACE"))                   
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asCarplaces = AsCarplaces.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asCarplaces))
                         {
-                            asCarplaces = AsCarplaces.GetAttributeValue(item);
                             TableContext.Add(asCarplaces);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
+
                     }
                 }
-                else if (Table == "AsCarplacesParams" && Table.Contains("AS_CARPLACES_PARAMS")) // E:\62\AS_CARPLACES_PARAMS_20220718_457eddea-b09f-4acf-b3d5-9343a8709945.XML
+                else if (Table == "AsCarplacesParams" && filepath.Contains("AS_CARPLACES_PARAMS"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsCarplacesParams;
-                    AsCarplacesParams asCarplacesParams;
-
-                    if (XmlEl != null)
+                    var reader = XmlReader.Create(filepath);
+                    AsCarplacesParams asCarplacesParams;                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("PARAM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asCarplacesParams = AsCarplacesParams.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asCarplacesParams))
                         {
-                            asCarplacesParams = AsCarplacesParams.GetAttributeValue(item);
                             TableContext.Add(asCarplacesParams);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+
+                    } 
                 }
-                else if (Table == "AsChangeHistory" && Table.Contains("AS_CHANGE_HISTORY")) // E:\62\AS_CHANGE_HISTORY_20220718_211b2807-a8d7-485d-9569-f65ed2b16f0e.XML
+                else if (Table == "AsChangeHistory" && filepath.Contains("AS_CHANGE_HISTORY"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsChangeHistory;
+                    var reader = XmlReader.Create(filepath);
                     AsChangeHistory asChangeHistory;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("ITEM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asChangeHistory = AsChangeHistory.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asChangeHistory))
                         {
-                            asChangeHistory = AsChangeHistory.GetAttributeValue(item);
                             TableContext.Add(asChangeHistory);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+
+                    }  
                 }
-                else if (Table == "AsHouses" && Table.Contains("AS_HOUSES")) // E:\62\AS_HOUSES_20220718_ad99dba2-a6ac-4772-8092-c31b283b8eec.XML
+                else if (Table == "AsHouses" && filepath.Contains("AS_HOUSES"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsHouses;
+                    var reader = XmlReader.Create(filepath);
                     AsHouses asHouses;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("HOUSE"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asHouses = AsHouses.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asHouses))
                         {
-                            asHouses = AsHouses.GetAttributeValue(item);
                             TableContext.Add(asHouses);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+
+                    } 
                 }
-                else if (Table == "AsHousesParams" && Table.Contains("AS_HOUSES_PARAMS")) // E:\62\AS_HOUSES_PARAMS_20220718_6b934a0b-7ea3-456d-8bc9-7a7d0d0377ed.XML
+                else if (Table == "AsHousesParams" && filepath.Contains("AS_HOUSES_PARAMS"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsHousesParams;
+                    var reader = XmlReader.Create(filepath);
                     AsHousesParams asHousesParams;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("PARAM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asHousesParams = AsHousesParams.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asHousesParams))
                         {
-                            asHousesParams = AsHousesParams.GetAttributeValue(item);
                             TableContext.Add(asHousesParams);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+
+                    } 
                 }
-                else if (Table == "AsMunHierarchy" && Table.Contains("AS_MUN_HIERARCHY")) // E:\62\AS_MUN_HIERARCHY_20220718_f124165a-03aa-415d-9f75-ed3315f560a2.XML
+                else if (Table == "AsMunHierarchy" && filepath.Contains("AS_MUN_HIERARCHY"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsMunHierarchy;
+                    var reader = XmlReader.Create(filepath);
                     AsMunHierarchy asMunHierarchy;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("ITEM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asMunHierarchy = AsMunHierarchy.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asMunHierarchy))
                         {
-                            asMunHierarchy = AsMunHierarchy.GetAttributeValue(item);
                             TableContext.Add(asMunHierarchy);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+
+                    } 
                 }
-                else if (Table == "AsNormativeDocs" && Table.Contains("AS_NORMATIVE_DOCS")) // E:\62\AS_NORMATIVE_DOCS_20220718_043022ce-d00f-435f-9ef6-97cfdd123312.XML
+                else if (Table == "AsNormativeDocs" && filepath.Contains("AS_NORMATIVE_DOCS"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsNormativeDocs;
+                    var reader = XmlReader.Create(filepath);
                     AsNormativeDocs asNormativeDocs;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("NORMDOC"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asNormativeDocs = AsNormativeDocs.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asNormativeDocs))
                         {
-                            asNormativeDocs = AsNormativeDocs.GetAttributeValue(item);
                             TableContext.Add(asNormativeDocs);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+
+                    } 
                 }
-                else if (Table == "AsReestrObjects" && Table.Contains("AS_REESTR_OBJECTS")) // E:\62\AS_REESTR_OBJECTS_20220718_18ccc35d-49bd-412d-86b9-a4f9642a2f43.XML
+                else if (Table == "AsReestrObjects" && filepath.Contains("AS_REESTR_OBJECTS"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsReestrObjects;
+                    var reader = XmlReader.Create(filepath);
                     AsReestrObjects asReestrObjects;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("OBJECT"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asReestrObjects = AsReestrObjects.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asReestrObjects))
                         {
-                            asReestrObjects = AsReestrObjects.GetAttributeValue(item);
                             TableContext.Add(asReestrObjects);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+                    } 
                 }
-                else if (Table == "AsRooms" && Table.Contains("AS_ROOMS")) // E:\62\AS_ROOMS_20220718_c8a1b2c3-d72f-4b55-bfd5-34fe751ed575.XML
+                else if (Table == "AsRooms" && filepath.Contains("AS_ROOMS")) 
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsRooms;
+                    var reader = XmlReader.Create(filepath);
                     AsRooms asRooms;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("ROOM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asRooms = AsRooms.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asRooms))
                         {
-                            asRooms = AsRooms.GetAttributeValue(item);
                             TableContext.Add(asRooms);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
                     }
+
                 }
-                else if (Table == "AsRoomsParams" && Table.Contains("AS_ROOMS_PARAMS")) // E:\62\AS_ROOMS_PARAMS_20220718_7f320054-6314-447c-992b-7fe5f2f2d5f7.XML
+                else if (Table == "AsRoomsParams" && filepath.Contains("AS_ROOMS_PARAMS"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsRoomsParams;
+                    var reader = XmlReader.Create(filepath);
                     AsRoomsParams asRoomsParams;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("PARAM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asRoomsParams = AsRoomsParams.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asRoomsParams))
                         {
-                            asRoomsParams = AsRoomsParams.GetAttributeValue(item);
                             TableContext.Add(asRoomsParams);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+                    } 
                 }
-                else if (Table == "AsSteads" && Table.Contains("AS_STEADS")) // E:\62\AS_STEADS_20220718_f120732c-2c25-4f57-91cb-e0d945741704.XML
+                else if (Table == "AsSteads" && filepath.Contains("AS_STEADS"))
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsSteads;
+                    var reader = XmlReader.Create(filepath);
                     AsSteads asSteads;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("STEAD"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asSteads = AsSteads.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asSteads))
                         {
-                            asSteads = AsSteads.GetAttributeValue(item);
                             TableContext.Add(asSteads);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+                    } 
                 }
-                else if (Table == "AsSteadsParams" && Table.Contains("AS_STEADS_PARAMS")) // E:\62\AS_STEADS_PARAMS_20220718_c9e22b54-3d1a-483e-8844-8bd9011fbd18.XML
+                else if (Table == "AsSteadsParams" && filepath.Contains("AS_STEADS_PARAMS")) 
                 {
-                    XmlDocument XmlDoc = new XmlDocument();
-                    XmlDoc.Load(filepath);
-                    XmlElement XmlEl = XmlDoc.DocumentElement;
-
                     var TableContext = ContextDB.AsSteadsParams;
+                    var reader = XmlReader.Create(filepath);
                     AsSteadsParams asSteadsParams;
-
-                    if (XmlEl != null)
+                    
+                    int elementsCount = 0;
+                    while (reader.ReadToFollowing("PARAM"))
                     {
-                        foreach (XmlElement item in XmlEl)
+                        asSteadsParams = AsSteadsParams.GetAttributeValue(reader);
+                        if (!TableContext.Contains(asSteadsParams))
                         {
-                            asSteadsParams = AsSteadsParams.GetAttributeValue(item);
                             TableContext.Add(asSteadsParams);
                             ContextDB.SaveChanges();
+                            elementsCount++;
+                            textBoxStatus.AppendText($"\n Строк вставлено: {elementsCount}");
                         }
-                    }
+                    } 
+
                 }
                 else
-                    textBoxStatus.AppendText($"\n Не удаётся найти соответствие между введённым путём и выбраннрй таблицей."); 
+                    textBoxStatus.AppendText($"\n Не удаётся найти соответствие между введённым путём и выбранной таблицей."); 
             }
             else
                 textBoxStatus.AppendText($"\n Файл не найден.");

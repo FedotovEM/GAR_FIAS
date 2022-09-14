@@ -46,31 +46,49 @@ namespace WindowsFormsAppGAR.Repository.Models
         [StringLength(8000)]
         public string Comment { get; set; }
 
-        public static AsNormativeDocs GetAttributeValue(XmlElement item)
+        public static AsNormativeDocs GetAttributeValue(XmlReader item)
         {
             AsNormativeDocs asNormativeDocs = new AsNormativeDocs();
 
-            asNormativeDocs.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asNormativeDocs.Name = item.Attributes.GetNamedItem("NAME").Value;
-            asNormativeDocs.Date = DateTime.Parse(item.Attributes.GetNamedItem("DATE").Value);
-            asNormativeDocs.Number = item.Attributes.GetNamedItem("NUMBER").Value;
-            asNormativeDocs.Type = int.Parse(item.Attributes.GetNamedItem("TYPE").Value);
-            asNormativeDocs.Kind = int.Parse(item.Attributes.GetNamedItem("KIND").Value);
-            asNormativeDocs.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asNormativeDocs.Orgname = item.Attributes.GetNamedItem("ORGNAME").Value;
-            asNormativeDocs.Regnum = item.Attributes.GetNamedItem("REGNUM").Value;
+            item.MoveToAttribute("ID");
+            asNormativeDocs.Id = long.Parse(item.Value);
+            item.MoveToAttribute("NAME");
+            asNormativeDocs.Name = item.Value;
+            item.MoveToAttribute("DATE");
+            asNormativeDocs.Date = DateTime.Parse(item.Value);
+            item.MoveToAttribute("NUMBER");
+            asNormativeDocs.Number = item.Value;
+            item.MoveToAttribute("TYPE");
+            asNormativeDocs.Type = int.Parse(item.Value);
+            item.MoveToAttribute("KIND");
+            asNormativeDocs.Kind = int.Parse(item.Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asNormativeDocs.Updatedate = DateTime.Parse(item.Value);
 
-            if (item.HasAttribute("REGDATE"))
-                asNormativeDocs.Regdate = DateTime.Parse(item.Attributes.GetNamedItem("REGDATE").Value);
+            if (item.MoveToAttribute("ORGNAME"))
+                asNormativeDocs.Orgname = item.Value;
+            else
+                asNormativeDocs.Orgname = null;
+
+            if (item.MoveToAttribute("REGNUM"))
+                asNormativeDocs.Regnum = item.Value;
+            else
+                asNormativeDocs.Regnum = null;
+
+            if (item.MoveToAttribute("REGDATE"))
+                asNormativeDocs.Regdate = DateTime.Parse(item.Value);
             else
                 asNormativeDocs.Regdate = null;
 
-            if (item.HasAttribute("ACCDATE"))
-                asNormativeDocs.Accdate = DateTime.Parse(item.Attributes.GetNamedItem("ACCDATE").Value);
+            if (item.MoveToAttribute("ACCDATE"))
+                asNormativeDocs.Accdate = DateTime.Parse(item.Value);
             else
                 asNormativeDocs.Accdate = null;
 
-            asNormativeDocs.Comment = item.Attributes.GetNamedItem("COMMENT").Value;
+            if (item.MoveToAttribute("COMMENT")) 
+                asNormativeDocs.Comment = item.Value;
+            else
+                asNormativeDocs.Comment = null;
 
             return asNormativeDocs;
         }

@@ -23,14 +23,18 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("CHANGEID")]
         public long Changeid { get; set; }
 
-        public static AsAddrObjDivision GetAttributeValue(XmlElement item)
+        public static AsAddrObjDivision GetAttributeValue(XmlReader item)
         {
             AsAddrObjDivision asAddrObjDivision = new AsAddrObjDivision();
 
-            asAddrObjDivision.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asAddrObjDivision.Parentid = long.Parse(item.Attributes.GetNamedItem("PARENTID").Value);
-            asAddrObjDivision.Childid = long.Parse(item.Attributes.GetNamedItem("CHILDID").Value);
-            asAddrObjDivision.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);   
+            item.MoveToAttribute("ID");
+            asAddrObjDivision.Id = long.Parse(item.Value);
+            item.MoveToAttribute("PARENTID");
+            asAddrObjDivision.Parentid = long.Parse(item.Value);
+            item.MoveToAttribute("CHILDID");
+            asAddrObjDivision.Childid = long.Parse(item.Value);
+            item.MoveToAttribute("CHANGEID");
+            asAddrObjDivision.Changeid = long.Parse(item.Value);   
 
             return asAddrObjDivision;
         }

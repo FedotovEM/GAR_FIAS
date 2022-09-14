@@ -35,19 +35,28 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ENDDATE", TypeName = "date")]
         public DateTime Enddate { get; set; }
 
-        public static AsHousesParams GetAttributeValue(XmlElement item)
+        public static AsHousesParams GetAttributeValue(XmlReader item)
         {
             AsHousesParams asHousesParams = new AsHousesParams();
 
-            asHousesParams.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asHousesParams.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asHousesParams.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asHousesParams.Changeidend = long.Parse(item.Attributes.GetNamedItem("CHANGEIDEND").Value);
-            asHousesParams.Typeid = int.Parse(item.Attributes.GetNamedItem("TYPEID").Value);
-            asHousesParams.Value = item.Attributes.GetNamedItem("VALUE").Value;
-            asHousesParams.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asHousesParams.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asHousesParams.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("ID");
+            asHousesParams.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asHousesParams.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("CHANGEID");
+            asHousesParams.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("CHANGEIDEND");
+            asHousesParams.Changeidend = long.Parse(item.Value);
+            item.MoveToAttribute("TYPEID");
+            asHousesParams.Typeid = int.Parse(item.Value);
+            item.MoveToAttribute("VALUE");
+            asHousesParams.Value = item.Value;
+            item.MoveToAttribute("UPDATEDATE");
+            asHousesParams.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asHousesParams.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asHousesParams.Enddate = DateTime.Parse(item.Value);
 
             return asHousesParams;
         }

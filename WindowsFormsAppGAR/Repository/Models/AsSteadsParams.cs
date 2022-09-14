@@ -35,19 +35,28 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ENDDATE", TypeName = "date")]
         public DateTime Enddate { get; set; }
 
-        public static AsSteadsParams GetAttributeValue(XmlElement item)
+        public static AsSteadsParams GetAttributeValue(XmlReader item)
         {
             AsSteadsParams asSteadsParams = new AsSteadsParams();
 
-            asSteadsParams.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asSteadsParams.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asSteadsParams.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asSteadsParams.Changeidend = long.Parse(item.Attributes.GetNamedItem("CHANGEIDEND").Value);
-            asSteadsParams.Typeid = int.Parse(item.Attributes.GetNamedItem("TYPEID").Value);
-            asSteadsParams.Value = item.Attributes.GetNamedItem("VALUE").Value;
-            asSteadsParams.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asSteadsParams.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asSteadsParams.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("ID");
+            asSteadsParams.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asSteadsParams.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("CHANGEID");
+            asSteadsParams.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("CHANGEIDEND");
+            asSteadsParams.Changeidend = long.Parse(item.Value);
+            item.MoveToAttribute("TYPEID");
+            asSteadsParams.Typeid = int.Parse(item.Value);
+            item.MoveToAttribute("VALUE");
+            asSteadsParams.Value = item.Value;
+            item.MoveToAttribute("UPDATEDATE");
+            asSteadsParams.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asSteadsParams.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asSteadsParams.Enddate = DateTime.Parse(item.Value);
 
             return asSteadsParams;
         }

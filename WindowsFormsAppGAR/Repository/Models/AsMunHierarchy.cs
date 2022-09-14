@@ -42,42 +42,51 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("PATH", TypeName = "text")]
         public string Path { get; set; }
 
-        public static AsMunHierarchy GetAttributeValue(XmlElement item)
+        public static AsMunHierarchy GetAttributeValue(XmlReader item)
         {
             AsMunHierarchy asMunHierarchy = new AsMunHierarchy();
 
-            asMunHierarchy.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asMunHierarchy.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
+            item.MoveToAttribute("ID");
+            asMunHierarchy.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asMunHierarchy.Objectid = long.Parse(item.Value);
 
-            if (item.HasAttribute("PARENTOBJID"))
-                asMunHierarchy.Parentobjid = long.Parse(item.Attributes.GetNamedItem("PARENTOBJID").Value);
+            if (item.MoveToAttribute("PARENTOBJID"))
+                asMunHierarchy.Parentobjid = long.Parse(item.Value);
             else
                 asMunHierarchy.Parentobjid = null;
 
-            asMunHierarchy.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asMunHierarchy.Oktmo = item.Attributes.GetNamedItem("OKTMO").Value;
+            item.MoveToAttribute("CHANGEID");
+            asMunHierarchy.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("OKTMO");
+            asMunHierarchy.Oktmo = item.Value;
             
-            if (item.HasAttribute("PREVID"))
-                asMunHierarchy.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("PREVID"))
+                asMunHierarchy.Previd = long.Parse(item.Value);
             else
                 asMunHierarchy.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asMunHierarchy.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asMunHierarchy.Nextid = long.Parse(item.Value);
             else
                 asMunHierarchy.Nextid = null;
 
-            asMunHierarchy.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asMunHierarchy.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asMunHierarchy.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asMunHierarchy.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asMunHierarchy.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asMunHierarchy.Enddate = DateTime.Parse(item.Value);
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asMunHierarchy.Isactive = true;
             else
                 asMunHierarchy.Isactive = false;
 
-            asMunHierarchy.Path = item.Attributes.GetNamedItem("PATH").Value;
+            item.MoveToAttribute("PATH");
+            asMunHierarchy.Path = item.Value;
 
             return asMunHierarchy;
         }

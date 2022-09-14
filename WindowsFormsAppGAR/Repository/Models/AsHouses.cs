@@ -56,56 +56,77 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ISACTIVE")]
         public bool Isactive { get; set; }
 
-        public static AsHouses GetAttributeValue(XmlElement item)
+        public static AsHouses GetAttributeValue(XmlReader item)
         {
             AsHouses asHouses = new AsHouses();
 
-            asHouses.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asHouses.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asHouses.Objectguid = item.Attributes.GetNamedItem("OBJECTGUID").Value;
-            asHouses.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asHouses.Housenum = item.Attributes.GetNamedItem("HOUSENUM").Value;
-            asHouses.Addnum1 = item.Attributes.GetNamedItem("ADDNUM1").Value;
-            asHouses.Addnum2 = item.Attributes.GetNamedItem("ADDNUM2").Value;
+            item.MoveToAttribute("ID");
+            asHouses.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asHouses.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTGUID");
+            asHouses.Objectguid = item.Value;
+            item.MoveToAttribute("CHANGEID");
+            asHouses.Changeid = long.Parse(item.Value);
 
-            if (item.HasAttribute("HOUSETYPE"))
-                asHouses.Housetype = byte.Parse(item.Attributes.GetNamedItem("HOUSETYPE").Value);
+            if (item.MoveToAttribute("HOUSENUM"))
+                asHouses.Housenum = item.Value;
+            else
+                asHouses.Housenum = null;
+
+            if (item.MoveToAttribute("ADDNUM1"))
+                asHouses.Addnum1 = item.Value;
+            else
+                asHouses.Addnum1 = null;
+            if (item.MoveToAttribute("ADDNUM2"))
+                asHouses.Addnum2 = item.Value;
+            else
+                asHouses.Addnum2 = null;
+
+            if (item.MoveToAttribute("HOUSETYPE"))
+                asHouses.Housetype = byte.Parse(item.Value);
             else
                 asHouses.Housetype = null;
 
-            if (item.HasAttribute("ADDTYPE1"))
-                asHouses.Addtype1 = byte.Parse(item.Attributes.GetNamedItem("ADDTYPE1").Value);
+            if (item.MoveToAttribute("ADDTYPE1"))
+                asHouses.Addtype1 = byte.Parse(item.Value);
             else
                 asHouses.Addtype1 = null;
 
-            if (item.HasAttribute("ADDTYPE2"))
-                asHouses.Addtype2 = byte.Parse(item.Attributes.GetNamedItem("ADDTYPE2").Value);
+            if (item.MoveToAttribute("ADDTYPE2"))
+                asHouses.Addtype2 = byte.Parse(item.Value);
             else
                 asHouses.Addtype2 = null;
 
-            asHouses.Opertypeid = short.Parse(item.Attributes.GetNamedItem("OPERTYPEID").Value);
+            item.MoveToAttribute("OPERTYPEID");
+            asHouses.Opertypeid = short.Parse(item.Value);
 
-            if (item.HasAttribute("PREVID"))
-                asHouses.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("PREVID"))
+                asHouses.Previd = long.Parse(item.Value);
             else
                 asHouses.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asHouses.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asHouses.Nextid = long.Parse(item.Value);
             else
                 asHouses.Nextid = null;
 
-            asHouses.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asHouses.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asHouses.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asHouses.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asHouses.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asHouses.Enddate = DateTime.Parse(item.Value);
 
-            string IsactualValue = item.Attributes.GetNamedItem("ISACTUAL").Value;
+            item.MoveToAttribute("ISACTUAL");
+            string IsactualValue = item.Value;
             if (IsactualValue == "1")
                 asHouses.Isactual = true;
             else
                 asHouses.Isactual = false;
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asHouses.Isactive = true;
             else

@@ -29,21 +29,26 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("CHANGEDATE", TypeName = "date")]
         public DateTime Changedate { get; set; }
 
-        public static AsChangeHistory GetAttributeValue(XmlElement item)
+        public static AsChangeHistory GetAttributeValue(XmlReader item)
         {
             AsChangeHistory asChangeHistory = new AsChangeHistory();
 
-            asChangeHistory.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asChangeHistory.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asChangeHistory.Adrobjectid = item.Attributes.GetNamedItem("ADROBJECTID").Value;
-            asChangeHistory.Opertypeid = int.Parse(item.Attributes.GetNamedItem("OPERTYPEID").Value);
+            item.MoveToAttribute("CHANGEID");
+            asChangeHistory.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asChangeHistory.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("ADROBJECTID");
+            asChangeHistory.Adrobjectid = item.Value;
+            item.MoveToAttribute("OPERTYPEID");
+            asChangeHistory.Opertypeid = int.Parse(item.Value);
 
-            if (item.HasAttribute("NDOCID"))
-                asChangeHistory.Ndocid = long.Parse(item.Attributes.GetNamedItem("NDOCID").Value);
+            if (item.MoveToAttribute("NDOCID"))
+                asChangeHistory.Ndocid = long.Parse(item.Value);
             else
                 asChangeHistory.Ndocid = null;
 
-            asChangeHistory.Changedate = DateTime.Parse(item.Attributes.GetNamedItem("CHANGEDATE").Value);
+            item.MoveToAttribute("CHANGEDATE");
+            asChangeHistory.Changedate = DateTime.Parse(item.Value);
            
             return asChangeHistory;
         }

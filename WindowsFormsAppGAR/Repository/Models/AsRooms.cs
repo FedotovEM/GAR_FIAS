@@ -47,39 +47,51 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ISACTIVE")]
         public bool Isactive { get; set; }
 
-        public static AsRooms GetAttributeValue(XmlElement item)
+        public static AsRooms GetAttributeValue(XmlReader item)
         {
             AsRooms asRooms = new AsRooms();
 
-            asRooms.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asRooms.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asRooms.Objectguid = item.Attributes.GetNamedItem("OBJECTGUID").Value;
-            asRooms.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asRooms.Roomnumber = item.Attributes.GetNamedItem("ROOMNUMBER").Value;
-            asRooms.Roomtype = short.Parse(item.Attributes.GetNamedItem("ROOMTYPE").Value);
-            asRooms.Opertypeid = short.Parse(item.Attributes.GetNamedItem("OPERTYPEID").Value);
+            item.MoveToAttribute("ID");
+            asRooms.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asRooms.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTGUID");
+            asRooms.Objectguid = item.Value;
+            item.MoveToAttribute("CHANGEID");
+            asRooms.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("ROOMNUMBER");
+            asRooms.Roomnumber = item.Value;
+            item.MoveToAttribute("ROOMTYPE");
+            asRooms.Roomtype = short.Parse(item.Value);
+            item.MoveToAttribute("OPERTYPEID");
+            asRooms.Opertypeid = short.Parse(item.Value);
 
-            if (item.HasAttribute("PREVID"))
-                asRooms.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("PREVID"))
+                asRooms.Previd = long.Parse(item.Value);
             else
                 asRooms.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asRooms.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asRooms.Nextid = long.Parse(item.Value);
             else
                 asRooms.Nextid = null;
 
-            asRooms.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asRooms.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asRooms.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asRooms.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asRooms.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asRooms.Enddate = DateTime.Parse(item.Value);
 
-            string IsactualValue = item.Attributes.GetNamedItem("ISACTUAL").Value;
+            item.MoveToAttribute("ISACTUAL");
+            string IsactualValue = item.Value;
             if (IsactualValue == "1")
                 asRooms.Isactual = true;
             else
                 asRooms.Isactual = false;
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asRooms.Isactive = true;
             else

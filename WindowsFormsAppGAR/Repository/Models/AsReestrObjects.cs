@@ -31,23 +31,30 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("UPDATEDATE", TypeName = "date")]
         public DateTime Updatedate { get; set; }
 
-        public static AsReestrObjects GetAttributeValue(XmlElement item)
+        public static AsReestrObjects GetAttributeValue(XmlReader item)
         {
             AsReestrObjects asReestrObjects = new AsReestrObjects();
 
-            asReestrObjects.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asReestrObjects.Objectguid = item.Attributes.GetNamedItem("OBJECTGUID").Value;
-            asReestrObjects.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
+            item.MoveToAttribute("OBJECTID");
+            asReestrObjects.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTGUID");
+            asReestrObjects.Objectguid = item.Value;
+            item.MoveToAttribute("CHANGEID");
+            asReestrObjects.Changeid = long.Parse(item.Value);
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asReestrObjects.Isactive = true;
             else
                 asReestrObjects.Isactive = false;
 
-            asReestrObjects.Levelid = short.Parse(item.Attributes.GetNamedItem("LEVELID").Value);
-            asReestrObjects.Createdate = DateTime.Parse(item.Attributes.GetNamedItem("CREATEDATE").Value);
-            asReestrObjects.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
+            item.MoveToAttribute("LEVELID");
+            asReestrObjects.Levelid = short.Parse(item.Value);
+            item.MoveToAttribute("CREATEDATE");
+            asReestrObjects.Createdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asReestrObjects.Updatedate = DateTime.Parse(item.Value);
           
             return asReestrObjects;
         }

@@ -45,38 +45,48 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ISACTIVE")]
         public bool Isactive { get; set; }
 
-        public static AsSteads GetAttributeValue(XmlElement item)
+        public static AsSteads GetAttributeValue(XmlReader item)
         {
             AsSteads asSteads = new AsSteads();
+            item.MoveToAttribute("ID");
+            asSteads.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asSteads.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTGUID");
+            asSteads.Objectguid = item.Value;
+            item.MoveToAttribute("CHANGEID");
+            asSteads.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("NUMBER");
+            asSteads.Number = item.Value;
+            item.MoveToAttribute("OPERTYPEID");
+            asSteads.Opertypeid = short.Parse(item.Value);
 
-            asSteads.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asSteads.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asSteads.Objectguid = item.Attributes.GetNamedItem("OBJECTGUID").Value;
-            asSteads.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asSteads.Number = item.Attributes.GetNamedItem("NUMBER").Value;
-            asSteads.Opertypeid = short.Parse(item.Attributes.GetNamedItem("OPERTYPEID").Value);
-
-            if (item.HasAttribute("PREVID"))
-                asSteads.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("PREVID"))
+                asSteads.Previd = long.Parse(item.Value);
             else
                 asSteads.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asSteads.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asSteads.Nextid = long.Parse(item.Value);
             else
                 asSteads.Nextid = null;
 
-            asSteads.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asSteads.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asSteads.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asSteads.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asSteads.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asSteads.Enddate = DateTime.Parse(item.Value);
 
-            string IsactualValue = item.Attributes.GetNamedItem("ISACTUAL").Value;
+            item.MoveToAttribute("ISACTUAL");
+            string IsactualValue = item.Value;
             if (IsactualValue == "1")
                 asSteads.Isactual = true;
             else
                 asSteads.Isactual = false;
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asSteads.Isactive = true;
             else

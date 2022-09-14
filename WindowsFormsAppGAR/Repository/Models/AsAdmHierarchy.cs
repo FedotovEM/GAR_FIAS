@@ -56,48 +56,79 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("PATH", TypeName = "text")]
         public string Path { get; set; }
 
-        public static AsAdmHierarchy GetAttributeValue(XmlElement item)
+        public static AsAdmHierarchy GetAttributeValue(XmlReader item)
         {
             AsAdmHierarchy asAdmHierarchy = new AsAdmHierarchy();
 
-            asAdmHierarchy.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asAdmHierarchy.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
+            item.MoveToAttribute("ID");
+            asAdmHierarchy.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asAdmHierarchy.Objectid = long.Parse(item.Value);
             
-            if (item.HasAttribute("PARENTOBJID"))
-                asAdmHierarchy.Parentobjid = long.Parse(item.Attributes.GetNamedItem("PARENTOBJID").Value);
+            if (item.MoveToAttribute("PARENTOBJID"))
+                asAdmHierarchy.Parentobjid = long.Parse(item.Value);
             else
                 asAdmHierarchy.Parentobjid = null;
-            
-            asAdmHierarchy.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asAdmHierarchy.Regioncode = item.Attributes.GetNamedItem("REGIONCODE").Value;
-            asAdmHierarchy.Areacode = item.Attributes.GetNamedItem("AREACODE").Value;
-            asAdmHierarchy.Citycode = item.Attributes.GetNamedItem("CITYCODE").Value;
-            asAdmHierarchy.Placecode = item.Attributes.GetNamedItem("PLACECODE").Value;
 
-            asAdmHierarchy.Plancode = item.Attributes.GetNamedItem("PLANCODE").Value;
-            asAdmHierarchy.Streetcode = item.Attributes.GetNamedItem("STREETCODE").Value;
+            item.MoveToAttribute("CHANGEID");
+            asAdmHierarchy.Changeid = long.Parse(item.Value);
             
-            if (item.HasAttribute("PREVID"))
-                asAdmHierarchy.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("REGIONCODE"))
+                asAdmHierarchy.Regioncode = item.Value;
+            else
+                asAdmHierarchy.Regioncode = null;
+
+            if (item.MoveToAttribute("AREACODE"))
+                asAdmHierarchy.Areacode = item.Value;
+            else
+                asAdmHierarchy.Areacode = null;
+
+            if (item.MoveToAttribute("CITYCODE"))
+                asAdmHierarchy.Citycode = item.Value;
+            else
+                asAdmHierarchy.Citycode = null;
+
+            if (item.MoveToAttribute("PLACECODE"))
+                asAdmHierarchy.Placecode = item.Value;
+            else
+                asAdmHierarchy.Placecode = null;
+
+            if (item.MoveToAttribute("PLANCODE"))
+                asAdmHierarchy.Plancode = item.Value;
+            else
+                asAdmHierarchy.Plancode = null;
+
+            if (item.MoveToAttribute("STREETCODE"))
+                asAdmHierarchy.Streetcode = item.Value;
+            else
+                asAdmHierarchy.Streetcode = null;
+            
+            if (item.MoveToAttribute("PREVID"))
+                asAdmHierarchy.Previd = long.Parse(item.Value);
             else
                 asAdmHierarchy.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asAdmHierarchy.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asAdmHierarchy.Nextid = long.Parse(item.Value);
             else
                 asAdmHierarchy.Nextid = null;
 
-            asAdmHierarchy.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asAdmHierarchy.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asAdmHierarchy.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asAdmHierarchy.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asAdmHierarchy.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asAdmHierarchy.Enddate = DateTime.Parse(item.Value);
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asAdmHierarchy.Isactive = true;
             else
                 asAdmHierarchy.Isactive = false;
 
-            asAdmHierarchy.Path = item.Attributes.GetNamedItem("PATH").Value;
+            item.MoveToAttribute("PATH");
+            asAdmHierarchy.Path = item.Value;
             return asAdmHierarchy;
         }
     }

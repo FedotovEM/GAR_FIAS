@@ -45,38 +45,49 @@ namespace WindowsFormsAppGAR.Repository.Models
         [Column("ISACTIVE")]
         public bool Isactive { get; set; }
 
-        public static AsCarplaces GetAttributeValue(XmlElement item)
+        public static AsCarplaces GetAttributeValue(XmlReader item)
         {
             AsCarplaces asCarplaces = new AsCarplaces();
 
-            asCarplaces.Id = long.Parse(item.Attributes.GetNamedItem("ID").Value);
-            asCarplaces.Objectid = long.Parse(item.Attributes.GetNamedItem("OBJECTID").Value);
-            asCarplaces.Objectguid = item.Attributes.GetNamedItem("OBJECTGUID").Value;
-            asCarplaces.Changeid = long.Parse(item.Attributes.GetNamedItem("CHANGEID").Value);
-            asCarplaces.Number = item.Attributes.GetNamedItem("NUMBER").Value;
-            asCarplaces.Opertypeid = short.Parse(item.Attributes.GetNamedItem("OPERTYPEID").Value);
+            item.MoveToAttribute("ID");
+            asCarplaces.Id = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTID");
+            asCarplaces.Objectid = long.Parse(item.Value);
+            item.MoveToAttribute("OBJECTGUID");
+            asCarplaces.Objectguid = item.Value;
+            item.MoveToAttribute("CHANGEID");
+            asCarplaces.Changeid = long.Parse(item.Value);
+            item.MoveToAttribute("NUMBER");
+            asCarplaces.Number = item.Value;
+            item.MoveToAttribute("OPERTYPEID");
+            asCarplaces.Opertypeid = short.Parse(item.Value);
 
-            if (item.HasAttribute("PREVID"))
-                asCarplaces.Previd = long.Parse(item.Attributes.GetNamedItem("PREVID").Value);
+            if (item.MoveToAttribute("PREVID"))
+                asCarplaces.Previd = long.Parse(item.Value);
             else
                 asCarplaces.Previd = null;
 
-            if (item.HasAttribute("NEXTID"))
-                asCarplaces.Nextid = long.Parse(item.Attributes.GetNamedItem("NEXTID").Value);
+            if (item.MoveToAttribute("NEXTID"))
+                asCarplaces.Nextid = long.Parse(item.Value);
             else
                 asCarplaces.Nextid = null;
 
-            asCarplaces.Updatedate = DateTime.Parse(item.Attributes.GetNamedItem("UPDATEDATE").Value);
-            asCarplaces.Startdate = DateTime.Parse(item.Attributes.GetNamedItem("STARTDATE").Value);
-            asCarplaces.Enddate = DateTime.Parse(item.Attributes.GetNamedItem("ENDDATE").Value);
+            item.MoveToAttribute("UPDATEDATE");
+            asCarplaces.Updatedate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("STARTDATE");
+            asCarplaces.Startdate = DateTime.Parse(item.Value);
+            item.MoveToAttribute("ENDDATE");
+            asCarplaces.Enddate = DateTime.Parse(item.Value);
 
-            string IsactualValue = item.Attributes.GetNamedItem("ISACTUAL").Value;
+            item.MoveToAttribute("ISACTUAL");
+            string IsactualValue = item.Value;
             if (IsactualValue == "1")
                 asCarplaces.Isactual = true;
             else
                 asCarplaces.Isactual = false;
 
-            string IsactiveValue = item.Attributes.GetNamedItem("ISACTIVE").Value;
+            item.MoveToAttribute("ISACTIVE");
+            string IsactiveValue = item.Value;
             if (IsactiveValue == "1")
                 asCarplaces.Isactive = true;
             else
