@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsFormsAppGAR;
 
 namespace WorkerServiceGAR
 {
@@ -22,6 +23,7 @@ namespace WorkerServiceGAR
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                WorkWithData.Insert();
                 await Task.Delay(1000, stoppingToken);
             }
         }

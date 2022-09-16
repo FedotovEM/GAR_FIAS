@@ -5,7 +5,10 @@ VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsAppGAR", "WindowsFormsAppGAR.csproj", "{32839ADB-FCDE-4728-88C4-24BAEA3734E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerServiceGAR", "..\WorkerServiceGAR\WorkerServiceGAR.csproj", "{3DF1B242-A7A7-48E5-9226-2D4FBD78EE96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerServiceGAR", "..\WorkerServiceGAR\WorkerServiceGAR.csproj", "{3DF1B242-A7A7-48E5-9226-2D4FBD78EE96}"
+	ProjectSection(ProjectDependencies) = postProject
+		{32839ADB-FCDE-4728-88C4-24BAEA3734E0} = {32839ADB-FCDE-4728-88C4-24BAEA3734E0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

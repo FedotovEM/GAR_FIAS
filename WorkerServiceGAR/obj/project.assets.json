@@ -442,6 +442,15 @@
             "rid": "win"
           }
         }
+      },
+      "WindowsFormsAppGAR/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/WindowsFormsAppGAR.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WindowsFormsAppGAR.dll": {}
+        }
       }
     }
   },
@@ -1098,12 +1107,18 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "WindowsFormsAppGAR/1.0.0": {
+      "type": "project",
+      "path": "../WindowsFormsAppGAR/WindowsFormsAppGAR.csproj",
+      "msbuildProject": "../WindowsFormsAppGAR/WindowsFormsAppGAR.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
       "Microsoft.Extensions.Hosting >= 3.1.29",
-      "Microsoft.Extensions.Hosting.WindowsServices >= 3.1.29"
+      "Microsoft.Extensions.Hosting.WindowsServices >= 3.1.29",
+      "WindowsFormsAppGAR >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -1137,7 +1152,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\WindowsFormsAppGAR\\WindowsFormsAppGAR.csproj": {
+              "projectPath": "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\WindowsFormsAppGAR\\WindowsFormsAppGAR.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

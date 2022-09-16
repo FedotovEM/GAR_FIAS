@@ -1,0 +1,5 @@
+C:\Users\Егерь\Documents\GitHub\GAR_FIAS\WorkerServiceGAR\obj\Debug\net5.0\WorkerServiceGAR.csproj.AssemblyReference.cache
+C:\Users\Егерь\Documents\GitHub\GAR_FIAS\WorkerServiceGAR\obj\Debug\net5.0\WorkerServiceGAR.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Егерь\Documents\GitHub\GAR_FIAS\WorkerServiceGAR\obj\Debug\net5.0\WorkerServiceGAR.AssemblyInfoInputs.cache
+C:\Users\Егерь\Documents\GitHub\GAR_FIAS\WorkerServiceGAR\obj\Debug\net5.0\WorkerServiceGAR.AssemblyInfo.cs
+C:\Users\Егерь\Documents\GitHub\GAR_FIAS\WorkerServiceGAR\obj\Debug\net5.0\WorkerServiceGAR.csproj.CoreCompileInputs.cache
