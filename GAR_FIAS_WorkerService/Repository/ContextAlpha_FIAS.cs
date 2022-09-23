@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using GAR_FIAS_WorkerService.Repository.Models;
-
-#nullable disable
+using GAR_FIAS_WorkerService.Helpers;
 
 namespace GAR_FIAS_WorkerService.Repository
 {
@@ -22,23 +22,33 @@ namespace GAR_FIAS_WorkerService.Repository
         public virtual DbSet<AddressObjectLevel> AddressObjectLevels { get; set; }
         public virtual DbSet<AddressObjectLevelGar> AddressObjectLevelGars { get; set; }
         public virtual DbSet<AddressObjectLevelRecord> AddressObjectLevelRecords { get; set; }
+        public virtual DbSet<AsAddhouseType> AsAddhouseTypes { get; set; }
         public virtual DbSet<AsAddrObj> AsAddrObjs { get; set; }
         public virtual DbSet<AsAddrObjDivision> AsAddrObjDivisions { get; set; }
         public virtual DbSet<AsAddrObjParam> AsAddrObjParams { get; set; }
+        public virtual DbSet<AsAddrObjType> AsAddrObjTypes { get; set; }
         public virtual DbSet<AsAdmHierarchy> AsAdmHierarchies { get; set; }
         public virtual DbSet<AsApartment> AsApartments { get; set; }
+        public virtual DbSet<AsApartmentType> AsApartmentTypes { get; set; }
         public virtual DbSet<AsApartmentsParam> AsApartmentsParams { get; set; }
         public virtual DbSet<AsCarplace> AsCarplaces { get; set; }
         public virtual DbSet<AsCarplacesParam> AsCarplacesParams { get; set; }
         public virtual DbSet<AsChangeHistory> AsChangeHistories { get; set; }
         public virtual DbSet<AsHouse> AsHouses { get; set; }
+        public virtual DbSet<AsHouseType> AsHouseTypes { get; set; }
         public virtual DbSet<AsHousesParam> AsHousesParams { get; set; }
         public virtual DbSet<AsHousesParamsOktmo> AsHousesParamsOktmos { get; set; }
         public virtual DbSet<AsHousesParamsPostalCode> AsHousesParamsPostalCodes { get; set; }
         public virtual DbSet<AsMunHierarchy> AsMunHierarchies { get; set; }
         public virtual DbSet<AsNormativeDoc> AsNormativeDocs { get; set; }
+        public virtual DbSet<AsNormativeDocsKind> AsNormativeDocsKinds { get; set; }
+        public virtual DbSet<AsNormativeDocsType> AsNormativeDocsTypes { get; set; }
+        public virtual DbSet<AsObjectLevel> AsObjectLevels { get; set; }
+        public virtual DbSet<AsOperationType> AsOperationTypes { get; set; }
+        public virtual DbSet<AsParamType> AsParamTypes { get; set; }
         public virtual DbSet<AsReestrObject> AsReestrObjects { get; set; }
         public virtual DbSet<AsRoom> AsRooms { get; set; }
+        public virtual DbSet<AsRoomType> AsRoomTypes { get; set; }
         public virtual DbSet<AsRoomsParam> AsRoomsParams { get; set; }
         public virtual DbSet<AsStead> AsSteads { get; set; }
         public virtual DbSet<AsSteadsParam> AsSteadsParams { get; set; }
@@ -49,34 +59,16 @@ namespace GAR_FIAS_WorkerService.Repository
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-F4DDTQQ\\SQLEXPRESS; Initial Catalog=Alpha_FIAS;Integrated Security=True;");
+                string connectionString = ConfigurationHelper.GetSectionValue("ConnectionString");
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
-
-            modelBuilder.Entity<AddressObject>(entity =>
-            {
-                entity.Property(e => e.AddressObjectGuid).IsUnicode(false);
-
-                entity.Property(e => e.Kladr).IsUnicode(false);
-
-                entity.Property(e => e.Level).IsUnicode(false);
-
-                entity.Property(e => e.Name).IsUnicode(false);
-
-                entity.Property(e => e.ParentAoguid).IsUnicode(false);
-
-                entity.Property(e => e.TypeShortName).IsUnicode(false);
-            });
-
             modelBuilder.Entity<AddressObjectLevel>(entity =>
             {
                 entity.Property(e => e.AddressObjectLevelId).ValueGeneratedNever();
-
-                entity.Property(e => e.AddressObjectLevelName).IsUnicode(false);
             });
 
             modelBuilder.Entity<AddressObjectLevelGar>(entity =>
@@ -85,8 +77,6 @@ namespace GAR_FIAS_WorkerService.Repository
                     .HasName("PK__AddressO__FC6866ADF5F5D745");
 
                 entity.Property(e => e.GarLevelId).ValueGeneratedNever();
-
-                entity.Property(e => e.GarLevelName).IsUnicode(false);
             });
 
             modelBuilder.Entity<AddressObjectLevelRecord>(entity =>
@@ -108,21 +98,16 @@ namespace GAR_FIAS_WorkerService.Repository
                     .HasConstraintName("FK_AddressObjectLevel_AddressObjectLevelGar");
             });
 
+            modelBuilder.Entity<AsAddhouseType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
             modelBuilder.Entity<AsAddrObj>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Level).IsUnicode(false);
-
-                entity.Property(e => e.Name).IsUnicode(false);
-
-                entity.Property(e => e.Objectguid).IsUnicode(false);
-
-                entity.Property(e => e.Opertypeid)
-                    .IsUnicode(false)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Typename).IsUnicode(false);
+                entity.Property(e => e.Opertypeid).IsFixedLength();
             });
 
             modelBuilder.Entity<AsAddrObjDivision>(entity =>
@@ -133,55 +118,36 @@ namespace GAR_FIAS_WorkerService.Repository
             modelBuilder.Entity<AsAddrObjParam>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
             });
 
-            modelBuilder.Entity<AsAdmHierarchy>(entity =>
+            modelBuilder.Entity<AsAddrObjType>(entity =>
             {
-                entity.Property(e => e.Areacode).IsUnicode(false);
-
-                entity.Property(e => e.Citycode).IsUnicode(false);
-
-                entity.Property(e => e.Placecode).IsUnicode(false);
-
-                entity.Property(e => e.Plancode).IsUnicode(false);
-
-                entity.Property(e => e.Regioncode).IsUnicode(false);
-
-                entity.Property(e => e.Streetcode).IsUnicode(false);
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<AsApartment>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+            });
 
-                entity.Property(e => e.Number).IsUnicode(false);
-
-                entity.Property(e => e.Objectguid).IsUnicode(false);
+            modelBuilder.Entity<AsApartmentType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<AsApartmentsParam>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsCarplace>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Number).IsUnicode(false);
-
-                entity.Property(e => e.Objectguid).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsCarplacesParam>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsChangeHistory>(entity =>
@@ -190,64 +156,69 @@ namespace GAR_FIAS_WorkerService.Repository
                     .HasName("PK__AS_CHANG__EAE0006CE4854E4F");
 
                 entity.Property(e => e.Changeid).ValueGeneratedNever();
-
-                entity.Property(e => e.Adrobjectid).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsHouse>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+            });
 
-                entity.Property(e => e.Addnum1).IsUnicode(false);
-
-                entity.Property(e => e.Addnum2).IsUnicode(false);
-
-                entity.Property(e => e.Housenum).IsUnicode(false);
-
-                entity.Property(e => e.Objectguid).IsUnicode(false);
+            modelBuilder.Entity<AsHouseType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<AsHousesParam>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsHousesParamsOktmo>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsHousesParamsPostalCode>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsMunHierarchy>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Oktmo).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsNormativeDoc>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+            });
 
-                entity.Property(e => e.Comment).IsUnicode(false);
+            modelBuilder.Entity<AsNormativeDocsKind>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
 
-                entity.Property(e => e.Name).IsUnicode(false);
+            modelBuilder.Entity<AsNormativeDocsType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
 
-                entity.Property(e => e.Number).IsUnicode(false);
+            modelBuilder.Entity<AsObjectLevel>(entity =>
+            {
+                entity.HasKey(e => e.Level)
+                    .HasName("PK__AS_OBJEC__576DA3C1D025DA5F");
 
-                entity.Property(e => e.Orgname).IsUnicode(false);
+                entity.Property(e => e.Level).ValueGeneratedNever();
+            });
 
-                entity.Property(e => e.Regnum).IsUnicode(false);
+            modelBuilder.Entity<AsOperationType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<AsParamType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<AsReestrObject>(entity =>
@@ -256,57 +227,31 @@ namespace GAR_FIAS_WorkerService.Repository
                     .HasName("PK__AS_REEST__F4B70D85B7FB4DD8");
 
                 entity.Property(e => e.Objectid).ValueGeneratedNever();
-
-                entity.Property(e => e.Objectguid).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsRoom>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+            });
 
-                entity.Property(e => e.Objectguid).IsUnicode(false);
-
-                entity.Property(e => e.Roomnumber).IsUnicode(false);
+            modelBuilder.Entity<AsRoomType>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<AsRoomsParam>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsStead>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Number).IsUnicode(false);
-
-                entity.Property(e => e.Objectguid).IsUnicode(false);
             });
 
             modelBuilder.Entity<AsSteadsParam>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Value).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<HouseFia>(entity =>
-            {
-                entity.Property(e => e.AoGuid).IsUnicode(false);
-
-                entity.Property(e => e.BuildNum).IsUnicode(false);
-
-                entity.Property(e => e.HouseFiasGuid).IsUnicode(false);
-
-                entity.Property(e => e.HouseNum).IsUnicode(false);
-
-                entity.Property(e => e.Oktmo).IsUnicode(false);
-
-                entity.Property(e => e.PostalCode).IsUnicode(false);
-
-                entity.Property(e => e.StrucNum).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

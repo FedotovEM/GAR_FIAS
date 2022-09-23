@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Xml;
+using GAR_FIAS_WorkerService.Helpers;
 using GAR_FIAS_WorkerService.Repository;
 using GAR_FIAS_WorkerService.Repository.Models;
 
@@ -10,18 +11,19 @@ namespace GAR_FIAS_WorkerService
     class WorkWithData
     {
         static ContextAlpha_FIAS ContextDB;
-
         public static void Insert()
         {
-            ContextDB = new ContextAlpha_FIAS();
-            string dirName = @"D:\62";
+            ContextDB = new ContextAlpha_FIAS();            
+
+            string dirName = ConfigurationHelper.GetSectionValue("dirName");
+
             string[] filePaths = Directory.GetFiles(dirName);
 
             foreach (string filepath in filePaths)
             {
                 if (File.Exists(filepath))
                 {
-                    if (filepath.Contains("AS_ADDR_OBJ"))
+                    if (filepath.Contains("AS_ADDR_OBJ") && !filepath.Contains("AS_ADDR_OBJ_TYPES"))
                     {
                         var TableContext = ContextDB.AsAddrObjs;
                         var reader = XmlReader.Create(filepath);
@@ -220,7 +222,7 @@ namespace GAR_FIAS_WorkerService
 
                         }
                     }
-                    else if (filepath.Contains("AS_NORMATIVE_DOCS"))
+                    else if (filepath.Contains("AS_NORMATIVE_DOCS") && !(filepath.Contains("AS_NORMATIVE_DOCS_KINDS") || filepath.Contains("AS_NORMATIVE_DOCS_TYPES")))
                     {
                         var TableContext = ContextDB.AsNormativeDocs;
                         var reader = XmlReader.Create(filepath);
@@ -317,7 +319,166 @@ namespace GAR_FIAS_WorkerService
                                 ContextDB.SaveChanges();
                             }
                         }
+                    }//.................................................................................................
+                    else if (filepath.Contains("AS_ADDHOUSE_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsAddhouseTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsAddhouseType asAddhouseType;
 
+                        while (reader.ReadToFollowing("HOUSETYPE"))
+                        {
+                            asAddhouseType = AsAddhouseType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asAddhouseType))
+                            {
+                                TableContext.Add(asAddhouseType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_ADDR_OBJ_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsAddrObjTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsAddrObjType asAddrObjType;
+
+                        while (reader.ReadToFollowing("ADDRESSOBJECTTYPE"))
+                        {
+                            asAddrObjType = AsAddrObjType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asAddrObjType))
+                            {
+                                TableContext.Add(asAddrObjType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_APARTMENT_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsApartmentTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsApartmentType asApartmentType;
+
+                        while (reader.ReadToFollowing("APARTMENTTYPE"))
+                        {
+                            asApartmentType = AsApartmentType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asApartmentType))
+                            {
+                                TableContext.Add(asApartmentType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_HOUSE_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsHouseTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsHouseType asHouseType;
+
+                        while (reader.ReadToFollowing("HOUSETYPE"))
+                        {
+                            asHouseType = AsHouseType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asHouseType))
+                            {
+                                TableContext.Add(asHouseType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_NORMATIVE_DOCS_KINDS"))
+                    {
+                        var TableContext = ContextDB.AsNormativeDocsKinds;
+                        var reader = XmlReader.Create(filepath);
+                        AsNormativeDocsKind asNormativeDocsKind;
+
+                        while (reader.ReadToFollowing("NDOCKIND"))
+                        {
+                            asNormativeDocsKind = AsNormativeDocsKind.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asNormativeDocsKind))
+                            {
+                                TableContext.Add(asNormativeDocsKind);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_NORMATIVE_DOCS_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsNormativeDocsTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsNormativeDocsType asNormativeDocsType;
+
+                        while (reader.ReadToFollowing("NDOCTYPE"))
+                        {
+                            asNormativeDocsType = AsNormativeDocsType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asNormativeDocsType))
+                            {
+                                TableContext.Add(asNormativeDocsType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_OBJECT_LEVELS"))
+                    {
+                        var TableContext = ContextDB.AsObjectLevels;
+                        var reader = XmlReader.Create(filepath);
+                        AsObjectLevel asObjectLevel;
+
+                        while (reader.ReadToFollowing("OBJECTLEVEL"))
+                        {
+                            asObjectLevel = AsObjectLevel.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asObjectLevel))
+                            {
+                                TableContext.Add(asObjectLevel);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_OPERATION_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsOperationTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsOperationType asOperationType;
+
+                        while (reader.ReadToFollowing("OPERATIONTYPE"))
+                        {
+                            asOperationType = AsOperationType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asOperationType))
+                            {
+                                TableContext.Add(asOperationType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_PARAM_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsParamTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsParamType asParamType;
+
+                        while (reader.ReadToFollowing("PARAMTYPE"))
+                        {
+                            asParamType = AsParamType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asParamType))
+                            {
+                                TableContext.Add(asParamType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (filepath.Contains("AS_ROOM_TYPES"))
+                    {
+                        var TableContext = ContextDB.AsRoomTypes;
+                        var reader = XmlReader.Create(filepath);
+                        AsRoomType asRoomType;
+
+                        while (reader.ReadToFollowing("ROOMTYPE"))
+                        {
+                            asRoomType = AsRoomType.GetAttributeValue(reader);
+                            if (!TableContext.Contains(asRoomType))
+                            {
+                                TableContext.Add(asRoomType);
+                                ContextDB.SaveChanges();
+                            }
+                        }
                     }
                 }
             }

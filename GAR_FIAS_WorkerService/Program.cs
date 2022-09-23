@@ -19,7 +19,7 @@ namespace GAR_FIAS_WorkerService
                 .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    services.AddHostedService<GARDataLoader>();
                 });
     }
 }
