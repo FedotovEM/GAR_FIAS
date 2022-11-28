@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj": {}
+    "C:\\Users\\Егерь\\Desktop\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj": {
+    "C:\\Users\\Егерь\\Desktop\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj",
+        "projectUniqueName": "C:\\Users\\Егерь\\Desktop\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj",
         "projectName": "GAR_FIAS_WorkerService",
-        "projectPath": "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj",
+        "projectPath": "C:\\Users\\Егерь\\Desktop\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj",
         "packagesPath": "C:\\Users\\Егерь\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\GAR_FIAS_WorkerService\\obj\\",
+        "outputPath": "C:\\Users\\Егерь\\Desktop\\GAR_FIAS\\GAR_FIAS_WorkerService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

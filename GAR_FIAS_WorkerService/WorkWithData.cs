@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Xml;
 using GAR_FIAS_WorkerService.Helpers;
 using GAR_FIAS_WorkerService.Repository;
@@ -11,6 +12,11 @@ namespace GAR_FIAS_WorkerService
     class WorkWithData
     {
         static ContextAlpha_FIAS ContextDB;
+        private static HttpClient GetClient() => new HttpClient(new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        });
+
         public static void Insert()
         {
             ContextDB = new ContextAlpha_FIAS();            

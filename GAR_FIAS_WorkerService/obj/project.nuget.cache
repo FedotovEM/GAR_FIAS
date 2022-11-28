@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "L4KFq0FxvOmK/F0GMmshvnDANZ9EOiqh+f2UwbVATFoU/Yugy0nXboNAbTs/kKRuoQ8JpbdfJWBRDb0k4k0G8A==",
+  "dgSpecHash": "nGOOP+EnJyTgGrrujw/Ieyg5E8fnlPzXgJrPWu9ZmuazDiDH+KicGBAG5nxP0nYNzpANeLdBdnG3YRqmBU/drA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Егерь\\Documents\\GitHub\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj",
+  "projectFilePath": "C:\\Users\\Егерь\\Desktop\\GAR_FIAS\\GAR_FIAS_WorkerService\\GAR_FIAS_WorkerService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Егерь\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Егерь\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
